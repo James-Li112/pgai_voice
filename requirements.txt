@@ -1,0 +1,4 @@
+pipecat-ai[local,websocket]~=1.7.0
+python-dotenv~=1.0
+uvicorn~=0.34
+twilio~=9.4
