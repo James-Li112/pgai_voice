@@ -17,6 +17,8 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, Request, WebSocket
 
 from persona import DEFAULT_SCENARIO, SCENARIOS
+from pipecat.frames.frames import InterimTranscriptionFrame, TranscriptionFrame
+from pipecat.observers.base_observer import BaseObserver, FramePushed
 from pipecat.pipeline.pipeline import Pipeline
 from pipecat.pipeline.runner import PipelineRunner
 from pipecat.pipeline.task import PipelineParams, PipelineTask
@@ -35,21 +37,62 @@ from pipecat.services.openai.realtime.events import (
     SemanticTurnDetection,
     SessionProperties,
 )
+from pipecat.services.openai.realtime import events as realtime_events
 from pipecat.services.openai.realtime.llm import OpenAIRealtimeLLMService
 from pipecat.transports.websocket.fastapi import FastAPIWebsocketParams, FastAPIWebsocketTransport
 
 load_dotenv(override=True)
 
+# TEMPORARY DIAGNOSTIC: pipecat doesn't log raw incoming Realtime API events
+# anywhere, and its receive loop silently drops event types it doesn't
+# explicitly dispatch (e.g. conversation.item.input_audio_transcription.failed
+# has no handler at all). Patch the parser so every event type is visible
+# while we track down why no transcription is showing up. Remove once fixed.
+_original_parse_server_event = realtime_events.parse_server_event
+
+
+def _debug_parse_server_event(message):
+    evt = _original_parse_server_event(message)
+    if evt.type != "response.output_audio.delta":  # far too noisy to print
+        print(f"[debug] realtime event: {evt.type}")
+        if evt.type == "error" or "failed" in evt.type:
+            print(f"[debug]   details: {evt}")
+    return evt
+
+
+realtime_events.parse_server_event = _debug_parse_server_event
+
 TWILIO_ACCOUNT_SID = os.environ["TWILIO_ACCOUNT_SID"]
 TWILIO_AUTH_TOKEN = os.environ["TWILIO_AUTH_TOKEN"]
 
-TWILIO_SAMPLE_RATE = 8000  # Twilio Media Streams audio is fixed at 8kHz mu-law
-SAMPLE_RATE_OUT = 24000  # OpenAI Realtime streams audio out at 24kHz
+# Twilio's wire format is fixed at 8kHz mu-law -- TwilioFrameSerializer handles
+# that conversion on its own (via its separate twilio_sample_rate default).
+# This is the *pipeline's* internal PCM rate, which must match what OpenAI
+# Realtime expects (a fixed 24kHz): OpenAIRealtimeLLMService sends frame.audio
+# straight through with no resampling of its own, so if this doesn't match,
+# audio arrives at the wrong speed/pitch and its VAD never recognizes it as
+# speech -- silently, with no errors, which is exactly what caused the two
+# dead-silent calls this was debugged from.
+PIPELINE_SAMPLE_RATE = 24000
 
 TRANSCRIPTS_DIR = Path(__file__).parent / "transcripts"
 RECORDINGS_DIR = Path(__file__).parent / "recordings"
 
 app = FastAPI()
+
+
+class DebugTranscriptionObserver(BaseObserver):
+    """Temporary diagnostic: logs every transcription frame, from whichever
+    processor pushes it, regardless of final/interim status. Unlike
+    on_user_turn_message_added, this shows us raw transcription events even
+    when they're empty or never reach the aggregator as a real user turn."""
+
+    async def on_push_frame(self, data: FramePushed):
+        frame = data.frame
+        if isinstance(frame, TranscriptionFrame):
+            print(f"[debug] TranscriptionFrame (final): {frame.text!r}")
+        elif isinstance(frame, InterimTranscriptionFrame):
+            print(f"[debug] InterimTranscriptionFrame: {frame.text!r}")
 
 
 def open_transcript_file(scenario: str, call_sid: str):
@@ -143,10 +186,20 @@ async def audio_endpoint(websocket: WebSocket):
     task = PipelineTask(
         pipeline,
         params=PipelineParams(
-            audio_in_sample_rate=TWILIO_SAMPLE_RATE,
-            audio_out_sample_rate=SAMPLE_RATE_OUT,
+            audio_in_sample_rate=PIPELINE_SAMPLE_RATE,
+            audio_out_sample_rate=PIPELINE_SAMPLE_RATE,
         ),
+        observers=[DebugTranscriptionObserver()],
     )
+
+    @transport.event_handler("on_client_disconnected")
+    async def on_client_disconnected(transport, client):
+        # Without this, nothing tells the pipeline the call actually ended
+        # (hangup, or Twilio's time_limit cap) -- it would otherwise sit
+        # holding the OpenAI Realtime connection open until the unrelated
+        # 300s idle timeout eventually cancels it as a fallback.
+        print(f"Call {call_sid} disconnected")
+        await task.cancel()
 
     # handle_sigint=False: this process is a long-running server handling one
     # call at a time, not a standalone script -- uvicorn owns Ctrl+C shutdown.
