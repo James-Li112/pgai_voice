@@ -1,0 +1,11 @@
+[00:07] bot:   [interrupted]
+[00:07] user: Quality and training purposes. Para español, oprima el dos.
+[00:08] bot: 
+[00:17] user: Thank you for calling Cozette Point Orthopedics. Would you like to create a demo patient profile? I just need your first and last name to get started.
+[00:18] bot: Alex Rivera.
+[00:32] user: Your patient profile is set up. and your date of birth is July 4th, 2000 for demo purposes. How may I help you today?
+[00:37] bot: I’d like to book a routine check-up. I’m a returning patient, hoping for something in the next two weeks.
+[00:46] user: He'd like the book in general office visit for a routine checkup. Is that correct?
+[00:54] bot: Okay, let me pick a time that should work for that.Yes, that’s right. Next Tuesday afternoon would be great, ideally around 2 p.m.
+[01:08] user: It looks like the appointment booking process has ended since you said goodbye. If you still want to schedule your checkup, please call back and I'll help you book the next available slot.
+[01:08] bot: 

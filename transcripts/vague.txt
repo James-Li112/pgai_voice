@@ -1,0 +1,14 @@
+[00:07] bot:   [interrupted]
+[00:17] user: and training purposes. Para español oprima el dos. Thank you for calling Pivot Point Orthopedics. Would you like to create a demo patient profile? I just need your first and last name to get started.
+[00:17] bot: Morgan Kim.
+[00:22] bot: Let me just sort out the best way to respond here.Morgan Kim.
+[00:39] user: One moment while I set up your demo patient profile. Your patient profile is set up and your date of birth is July 4th, 2000 for demo purposes. How may I help you today?
+[00:46] bot: Yeah, I need to talk to someone about my thing from last time. It’s—kind of acting up again and I’m not sure what I’m supposed to do now.
+[01:06] user: I've documented your concern for our clinic support team. They will review your case and get back to you as soon as they can. Is there anything else you'd like help with right now?
+[01:12] bot: Maybe just one thing—if they need to reach me, they should call the same number as before. If that’s not in there, I can give it again.
+[01:32] user: I have your number as eight five eight I have your numbers, eight five eight nine four three zero one four three. Is that correct?
+[01:37] bot: Uh, I think so—yeah, it ends in 143. That’s the right one.
+[01:47] user: Perfect. Your contact number is confirmed. Is there anything else you'd like help with today?
+[01:50] bot: No, that’s it for now. I’ll wait for them to call me back. Thanks.
+[01:59] user: You're all set. The clinic team will reach out soon. Have a good day.
+[02:00] bot: Okay, thanks. You too.

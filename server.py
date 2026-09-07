@@ -9,6 +9,7 @@ first_call.py -- Twilio connects here the moment the call is answered.
 
 import json
 import os
+import time
 from pathlib import Path
 
 import aiohttp
@@ -34,7 +35,7 @@ from pipecat.services.openai.realtime.events import (
     AudioInput,
     InputAudioNoiseReduction,
     InputAudioTranscription,
-    SemanticTurnDetection,
+    TurnDetection,
     SessionProperties,
 )
 from pipecat.services.openai.realtime import events as realtime_events
@@ -103,6 +104,7 @@ def open_transcript_file(scenario: str, call_sid: str):
 
 @app.websocket("/audio")
 async def audio_endpoint(websocket: WebSocket):
+    call_start = time.monotonic()
     await websocket.accept()
 
     # Twilio sends two JSON text frames before any audio:
@@ -145,7 +147,15 @@ async def audio_endpoint(websocket: WebSocket):
                 audio=AudioConfiguration(
                     input=AudioInput(
                         transcription=InputAudioTranscription(),
-                        turn_detection=SemanticTurnDetection(),
+                        # Semantic VAD (even at low eagerness) reads the clean
+                        # sentence-final pauses inside a scripted IVR/monitoring
+                        # announcement as the far end finishing its turn. Plain
+                        # silence-duration VAD with a generous window is more
+                        # robust here: it only cares about literal silence, not
+                        # whether a sentence sounds "complete".
+                        turn_detection=TurnDetection(
+                            threshold=0.5, prefix_padding_ms=300, silence_duration_ms=900
+                        ),
                         noise_reduction=InputAudioNoiseReduction(type="near_field"),
                     )
                 ),
@@ -159,8 +169,10 @@ async def audio_endpoint(websocket: WebSocket):
     transcript_file = open_transcript_file(scenario, call_sid)
 
     def log_turn(role: str, text: str, note: str = ""):
+        elapsed = int(time.monotonic() - call_start)
+        timestamp = f"[{elapsed // 60:02d}:{elapsed % 60:02d}]"
         suffix = f"  [{note}]" if note else ""
-        line = f"{role}: {text}{suffix}"
+        line = f"{timestamp} {role}: {text}{suffix}"
         print(line)
         transcript_file.write(line + "\n")
         transcript_file.flush()

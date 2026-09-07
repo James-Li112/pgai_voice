@@ -1,0 +1,11 @@
+[00:07] bot:   [interrupted]
+[00:07] user: For quality and training purposes. Para español oprima el dos.
+[00:09] bot: 
+[00:17] user: Thank you for calling Pivot Point Orthopedics. Would you like to create a demo patient profile? I just need your first and last name to get started.
+[00:18] bot: Sam Patel.
+[00:33] user: Your patient profile has been created and your date of birth is July 4th, 2000 for demo purposes. How may I help you today?
+[00:39] bot: I need a refill on my blood pressure medication. I’m about to run out, and I’d like it sent to the CVS near my house.
+[00:53] user: I don't see any medications on your I don't see any medications on your chart that I can refill right now. If you'd like to speak with someone about this, just let me know
+[01:02] bot: Okay, let me think about what to say to the front desk for you.Yes, please connect me with someone who can help with the refill, since I’m close to running out.
+[01:13] user: Transferring you now. Thank you. Hello. You've reached the pretty good AI test line. Goodbye
+[01:13] bot: 
