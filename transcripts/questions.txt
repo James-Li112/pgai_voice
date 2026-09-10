@@ -1,23 +1,24 @@
-[00:07] bot:   [interrupted]
-[00:07] user: and training purposes. Para español oprima el dos.
-[00:08] bot: 
-[00:17] user: Thank you for calling Pivot Point Orthopedics. Would you like to create a demo patient profile? I just need your first and last name to get started.
-[00:18] bot: Casey Nguyen.
-[00:32] user: Your patient profile is set up. and your date of birth is July fourth, two thousand for demo purposes. How may I help you today?
-[00:39] bot: Hi, I’m thinking about becoming a new patient. Could you tell me your office hours, your location, and if you accept Blue Cross Blue Shield insurance?
-[01:10] user: Pivot point orthopedics is open Monday, Tuesday, and Thursday from 9 a.m. to 4 p.m., Wednesday from 12 p.m. to 7 p.m, and Friday from 9 a.m. to 12 p.m. We are located at 1234 Recovery Way, Suite 200 Austin Will you welcome your patients and accept most insurance plans including Blue Cross Blue Shield? Would you like to schedule a new patient appointment?
-[01:21] bot: Thanks, let me think about what else I should ask before booking.Do you require a referral for new patients, and is there anything specific I should bring to the first visit? If it’s straightforward, I’d be happy to schedule.
-[01:41] user: You do not need a referral to become a new patient at Pivot Point Orthopedics. For your first visit, please bring your photo ID, insurance card, and any relevant medical records or imaging if you have them. Would you like to go ahead and schedule your first appointment?
-[01:46] bot: Yes, please. Do you have any openings next week, preferably Tuesday or Thursday morning?
-[02:01] user: Before I check the schedule, can you tell me if this visit is just to establish care as a new patient, or do you have a specific concern or reason for your first appointment?
-[02:06] bot: It’s mainly to establish care, but I’ve also had some ongoing knee pain I’d like to get checked.
-[02:25] user: We have several openings next week with two providers. For Tuesday and Thursday mornings, would you prefer to see Avrikar or Duve Houser, or is either provider fine?
-[02:28] bot: Either provider is fine. I just need a morning time that works.
-[02:55] user: Let me check for the earliest available morning slot on Tuesday or Thursday next week. One moment. The earliest opening is Tuesday, September 15th at 9 AM with Ava Bricker. Would you like to book that slot? The earliest morning slot next week is Tuesday, September 15th at 9 AM with A. Bricker. Would you like to book that appointment?
-[02:59] bot: Yes, that works for me. Please book Tuesday at 9 AM with Abe Ricker.
-[03:21] user: Your appointment is set for Tuesday, September 15th at 9:00 a.m. with Abraker at Pivot Point Orthopedics. Please bring your photo ID, insurance card, a list of current medications, and any imaging discs if you have them. Would you like me to send you a text message with your appointment details?
-[03:23] bot: Yes, a text would be great. Thank you.
-[03:35] user: You'll get a text with your appointment details soon. If you have any other questions or need to reschedule, just let me know.
-[03:36] bot: Thanks, I appreciate the help.
-[03:45] user: You're welcome. You need anything else, just give us a call. Have a great day
-[03:46] bot: You too. Bye.
+[00:17] user: and training purposes. Para español oprima el dos. Thank you for calling Pivot Point Orthopedics. Would you like to create a demo patient profile? I just need your first and last name to get started
+[00:17] bot: Casey Nguyen.
+[00:19] bot: Casey Nguyen.
+[00:21] bot: Alright,  [interrupted]
+[00:24] bot: C-A-S  [interrupted]
+[00:24] user: Just to confirm, I have your
+[00:29] bot:   [interrupted]
+[00:29] user: I'm creating your demo patient profile now. Please hold on a moment.
+[00:40] user: Your patient profile is set up, and your date of birth is July fourth, two thousand, for demo purposes. I may add hope you today?
+[00:46] bot: What are your office hours, and where is the office located? Also, do you accept Blue Cross Blue Shield insurance?
+[01:24] user: to the point where forpedics is open Monday, Tuesday and Thursday from 9 a.m. to 4 p.m., Wednesday from 12 p.m. to 7 p.m. and Friday from 9 a.m. to 12 p.m. The clinic is at 1234 Recovery Way, Suite 200, Austin. Let me check on Blue Cross Blue Shield insurance for you. Let me check if Blue Cross Blue Shield is accepted here. One moment. Could you please provide your Blue Cross Blue Shield member ID number? This will help me check if your specific plan is accepted
+[01:37] bot: Let me read that out for you carefully.ID is B as in Bravo, C as in Charlie, 4, 7, 2, 9, 1, A as in Alpha, 6.
+[01:46] user: Thanks. What state is your Blue Cross Blue Shield plan issued in?
+[01:46] bot: Texas.
+[01:59] user: DC Acclaims mailing address or P.O. Box on the back of your insurance card? If so, please read it out. If not, just let me know
+[02:02] bot: I don’t see a claims mailing address or P.O. Box listed.
+[02:28] user: There are several Blue Cross Blue Shield plans accepted, but I need the exact plan name from your card to match it correctly. Could you read the full plan name as it appears on your card?
+[02:31] bot: Blue Cross Blue Shield of Texas PPO.
+[02:51] user: Thanks. Do you see a phone number printed on your insurance card? If so, please read it out. If not, just let me know.
+[02:57] bot: The number is 1-800-555-2470.
+[03:24] user: There are several Blue Cross Blue Shield PPO plans listed. To match your plan, do you see BlueChoice Medicare Advantage anywhere on your card, or is it just PPO? This will help me pick the right one.
+[03:28] bot: It just says PPO. I don’t see Blue Choice or Medicare Advantage listed.
+[03:46] user: Thank you for clarifying. Based on what you shared, your blue cross blue shield texas PPO plan is likely accepted. Would you like to update your insurance on file to this plan, or were you just checking if it's accepted?
+[03:51] bot: Just checking if it’s accepted. I’m still deciding about becoming a new patient.

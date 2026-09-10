@@ -1,0 +1,20 @@
+[00:07] bot:   [interrupted]
+[00:07] user: for quality and training purposes. Para español, oprima el dos.
+[00:08] bot: 
+[00:17] user: Thank you for calling Pivot Point Orthopedics. Would you like to create a demo patient profile? I just need your first and last name to get started.
+[00:18] bot: Riley Chen.
+[00:35] user: Your patient profile is set up and your date of birth is July 4th, 2000 for demo purposes. How may I help you today?
+[00:38] bot: I’d like to book an appointment for a routine check-up in the next couple of weeks.
+[00:50] user: You'd like to book a routine checkup, just to confirm, is this general office visit for routine care?
+[00:51] bot: Yes, it’s a general routine visit.
+[01:01] user: Do you have a specific provider you'd like to see? Or are you open to any available provider?
+[01:03] bot: Any available provider is fine.
+[01:17] user: You already have a routine office visit scheduled for Monday, September 14th at 10:30 a.m. Would you like to keep this appointment, reschedule it, or cancel it?
+[01:17] bot: Keep it.
+[01:28] user: You're all set for your appointment on Monday, September 14th at 10:30 a.m. Is there anything else I can help you with today?
+[01:33] bot: Actually, something came up and I need to ask about refilling my blood pressure prescription instead. Can you help with that?
+[01:49] user: I don't see any blood pressure medications on your chart that I can refill right now. If you think there should be one, I can connect you to our patient support team. Would you like to speak with someone about this?
+[01:50] bot: Yes, please connect me to patient support.
+[01:55] user: Transferring you now. Thank you.
+[02:02] user: Hello, you've reached the pretty good AI test line. Goodbye.
+[02:02] bot: 

@@ -1,0 +1,13 @@
+[00:18] user: Quality and training purposes. para español oprima el dos. Thank you for calling Pivot Point Orthopedics. Would you like to create a demo patient profile? I just need your first and last name
+[00:18] bot: Harper Lin.
+[00:20] bot: Harper Lin.
+[00:35] user: Your patient profile is set up and your date of birth is July 4th, 2000 for demo purposes. How may I help you today?
+[00:38] bot: I need a routine check-up, Tuesday or Wednesday morning next week, whichever’s open.
+[00:51] user: You mentioned you need a routine checkup. Just to confirm, is this for a general office visit for routine care or a non-urgent concern?
+[00:53] bot: General office visit for routine care.
+[01:11] user: You already have a routine office visit scheduled for Monday, September 14th at 10:30 a.m. Would you like to keep this appointment, reschedule it to a different day, or cancel it?
+[01:11] bot: Keep it, that's fine.
+[01:25] user: You are all set for your routine office visit on Monday, September 14th at 10:30 a.m. Is there anything else I can help you with today?
+[01:26] bot: No, that’s it. Thanks.
+[01:33] user: You're all set. Ata bye day
+[01:33] bot: Thanks, you too.

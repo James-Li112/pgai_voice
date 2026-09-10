@@ -1,0 +1,15 @@
+[00:07] bot:   [interrupted]
+[00:07] user: training purposes. Para español oprima el dos.
+[00:08] bot: 
+[00:17] user: Thank you for calling Pivot Point Orthopedics. Would you like to create a demo patient profile? I just need your first and last name to get started.
+[00:19] bot: Yeah, it's Morgan Kim.
+[00:33] user: Your patient profile is set up and your date of birth is July 4th, 2000 for demo purposes. How may I help you today?
+[00:39] bot: I need to talk to someone about my thing from last time. It’s been bothering me again and I just want to check what I’m supposed to do.
+[00:59] user: I see you have an open case about your recurring issue from last time. Would you like me to update your care team that your symptoms are bothering you again and you need guidance on what to do next? Is there anything specific you want to add?
+[01:08] bot: It’s kind of that same weird flare-up, like it acts up when I’m on my feet more, and I’m not sure if that’s normal or not. It’s mostly the same pain as before, just more frequent.
+[01:28] user: I've let your care team know that you're having the same pain as before, but it's happening more often and flares up when you're on your feet. They'll review your case and get back to you as soon as they can. Is there anything else you want to mention or ask about?
+[01:36] bot: Just—if they can, I’d like to know if I should keep doing what I was doing before, or if I should change anything. I don’t want to make it worse by guessing.
+[01:55] user: Oh, add that you want to know if you should keep following your previous instructions or if you need to change anything, since you don't want to make things worse. Your care team will review this and reach out with guidance soon. Anything else on your mind?
+[01:58] bot: No, that’s it. I’ll wait to hear back from them. Thanks.
+[02:10] user: You're all set. The care team will contact you soon with next steps. Have a good day
+[02:11] bot: Thanks, you too.

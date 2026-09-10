@@ -1,11 +1,22 @@
-[00:07] bot:   [interrupted]
-[00:07] user: Quality and training purposes. Para español, oprima el dos.
+[00:08] user: and training purposes. Para español oprima el dos.
 [00:08] bot: 
-[00:17] user: Thank you for calling Cozette Point Orthopedics. Would you like to create a demo patient profile? I just need your first and last name to get started.
+[00:08] bot:   [interrupted]
+[00:08] bot: 
+[00:18] user: Thank you for calling Pivot Point Orthopedics. Would you like to create a demo patient profile? I just need your first and last name to get started.
 [00:18] bot: Alex Rivera.
-[00:32] user: Your patient profile is set up. and your date of birth is July 4th, 2000 for demo purposes. How may I help you today?
-[00:37] bot: I’d like to book a routine check-up. I’m a returning patient, hoping for something in the next two weeks.
-[00:46] user: He'd like the book in general office visit for a routine checkup. Is that correct?
-[00:54] bot: Okay, let me pick a time that should work for that.Yes, that’s right. Next Tuesday afternoon would be great, ideally around 2 p.m.
-[01:08] user: It looks like the appointment booking process has ended since you said goodbye. If you still want to schedule your checkup, please call back and I'll help you book the next available slot.
-[01:08] bot: 
+[00:34] user: Your patient profile is set up and your date of birth is July 4th, 2000 for demo purposes. How may I help you today?
+[00:38] bot: I’d like to schedule a routine check-up in the next two weeks. I’m a returning patient.
+[00:50] user: We'd like to schedule a routine checkup. Just to confirm, is this for a general office visit for routine care or a non-urgent concern?
+[00:52] bot: General office visit for routine care.
+[01:03] user: Do you have a specific provider you'd like to see, or are you open to any available provider?
+[01:04] bot: Any available provider is fine.
+[01:14] user: Let me check for available routine checkup appointments with any provider in the next two weeks.
+[01:14] bot: Okay, thanks for checking the schedule.  [interrupted]
+[01:16] user: You
+[01:16] bot: 
+[01:30] user: You already have an office visit scheduled for Monday, September 14th at 10:30 a.m. Would you like to keep this appointment, reschedule it, or cancel it?
+[01:32] bot: Keep it, please. That time works for me, thanks.
+[01:44] user: Great. Your appointment for Monday, September 14th at 10:30 a.m. is confirmed. Let me know if you need anything else.
+[01:46] bot: No, that’s all for now. Thanks for your help.
+[01:52] user: You're all set. Have a great day
+[01:53] bot: You too, take care.
