@@ -73,6 +73,9 @@ async def main():
         settings=OpenAIRealtimeLLMService.Settings(
             system_instruction=system_instruction,
             session_properties=SessionProperties(
+                # Hard backstop against runaway/repetitive generations -- see
+                # server.py for the incident this guards against.
+                max_output_tokens=150,
                 audio=AudioConfiguration(
                     input=AudioInput(
                         transcription=InputAudioTranscription(),

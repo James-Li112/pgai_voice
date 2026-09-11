@@ -144,6 +144,12 @@ async def audio_endpoint(websocket: WebSocket):
         settings=OpenAIRealtimeLLMService.Settings(
             system_instruction=system_instruction,
             session_properties=SessionProperties(
+                # Hard backstop against runaway/repetitive generations (seen
+                # once as a ~50s turn that restated "confirming/submitting"
+                # ~19 different ways while the agent was slow to respond).
+                # ~150 tokens is generous for the persona's normal one-or-two
+                # sentence turns but caps a degenerate loop early.
+                max_output_tokens=150,
                 audio=AudioConfiguration(
                     input=AudioInput(
                         transcription=InputAudioTranscription(),
