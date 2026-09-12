@@ -14,7 +14,7 @@ Built with Twilio (telephony), Pipecat (pipeline and media-stream plumbing), and
 ## Setup
 
 ```bash
-git clone https://github.com/YOURNAME/pgai-voicebot.git
+git clone https://github.com/James-Li112/pgai-voicebot.git
 cd pgai-voicebot
 
 python -m venv .venv
