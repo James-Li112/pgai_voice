@@ -10,6 +10,7 @@ The bot responds as a patient calling in. Ctrl+C to stop.
 import argparse
 import asyncio
 import os
+import time
 from datetime import datetime
 from pathlib import Path
 
@@ -31,7 +32,7 @@ from pipecat.services.openai.realtime.events import (
     AudioInput,
     InputAudioNoiseReduction,
     InputAudioTranscription,
-    SemanticTurnDetection,
+    TurnDetection,
     SessionProperties,
 )
 from pipecat.services.openai.realtime.llm import OpenAIRealtimeLLMService
@@ -58,6 +59,7 @@ async def main():
     )
     args = parser.parse_args()
     system_instruction = SCENARIOS[args.scenario]
+    session_start = time.monotonic()
 
     transport = LocalAudioTransport(
         LocalAudioTransportParams(
@@ -71,10 +73,15 @@ async def main():
         settings=OpenAIRealtimeLLMService.Settings(
             system_instruction=system_instruction,
             session_properties=SessionProperties(
+                # Hard backstop against runaway/repetitive generations -- see
+                # server.py for the incident this guards against.
+                max_output_tokens=150,
                 audio=AudioConfiguration(
                     input=AudioInput(
                         transcription=InputAudioTranscription(),
-                        turn_detection=SemanticTurnDetection(),
+                        turn_detection=TurnDetection(
+                            threshold=0.5, prefix_padding_ms=300, silence_duration_ms=900
+                        ),
                         noise_reduction=InputAudioNoiseReduction(type="near_field"),
                     )
                 ),
@@ -88,8 +95,10 @@ async def main():
     transcript_file = open_transcript_file(args.scenario)
 
     def log_turn(role: str, text: str, note: str = ""):
+        elapsed = int(time.monotonic() - session_start)
+        timestamp = f"[{elapsed // 60:02d}:{elapsed % 60:02d}]"
         suffix = f"  [{note}]" if note else ""
-        line = f"{role}: {text}{suffix}"
+        line = f"{timestamp} {role}: {text}{suffix}"
         print(line)
         transcript_file.write(line + "\n")
         transcript_file.flush()

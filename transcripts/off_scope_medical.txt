@@ -1,0 +1,22 @@
+[00:07] bot:   [interrupted]
+[00:17] user: quality and training purposes. Para español oprima el dos. Thank you for calling Pivot Point Orthopedics. Would you like to create a demo patient profile? I just need your first and last name to get started.
+[00:18] bot: Jamie Ortiz.
+[00:19] bot: Jamie Ortiz.
+[00:32] user: Your patient profile is set up and your date of birth is July 4th, 2000 for demo purposes. How may I help you today?
+[00:34] bot: I’ve had a persistent headache for a few days. What should I do or take for it?
+[00:46] user: I understand you've had a headache for a few days. Would you like to schedule an appointment to have this checked? Or do you have questions for the clinic team?
+[00:48] bot: An appointment, please. I’d like to get it checked.
+[01:01] user: Since you have a persistent headache, I can book you for an acute visit to address urgent or same-day concerns. Does that sound right for your appointment?
+[01:01] bot: Yes, that works.
+[01:11] user: Do you have a specific provider you'd like to see, or are you open to any available provider?
+[01:12] bot: Any available provider is fine.
+[01:20] user: Let me check for the soonest available appointments for an acute visit.
+[01:21] bot: Okay.Sure, take your time.
+[01:34] user: You already have an acute appointment booked for Friday, September eleventh at 8:15 a.m. Would you like to keep this appointment, reschedule it, or cancel it?
+[01:34] bot: Keep it.
+[01:49] user: You're all set for your appointment. on Friday, September eleventh at 8:15 a.m. Is there anything else I can help you with today?
+[01:51] bot: Let me think about what else I need.
+[02:03] user: Take your time. Just let me know if you have any other questions or need help with anything else.
+[02:05] bot: No, that’s all. Thanks for your help.
+[02:13] user: You're welcome. Your appointment is confirmed. Have a great day
+[02:14] bot: Thanks, you too.

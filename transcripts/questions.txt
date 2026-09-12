@@ -1,0 +1,24 @@
+[00:17] user: and training purposes. Para español oprima el dos. Thank you for calling Pivot Point Orthopedics. Would you like to create a demo patient profile? I just need your first and last name to get started
+[00:17] bot: Casey Nguyen.
+[00:19] bot: Casey Nguyen.
+[00:21] bot: Alright,  [interrupted]
+[00:24] bot: C-A-S  [interrupted]
+[00:24] user: Just to confirm, I have your
+[00:29] bot:   [interrupted]
+[00:29] user: I'm creating your demo patient profile now. Please hold on a moment.
+[00:40] user: Your patient profile is set up, and your date of birth is July fourth, two thousand, for demo purposes. I may add hope you today?
+[00:46] bot: What are your office hours, and where is the office located? Also, do you accept Blue Cross Blue Shield insurance?
+[01:24] user: to the point where forpedics is open Monday, Tuesday and Thursday from 9 a.m. to 4 p.m., Wednesday from 12 p.m. to 7 p.m. and Friday from 9 a.m. to 12 p.m. The clinic is at 1234 Recovery Way, Suite 200, Austin. Let me check on Blue Cross Blue Shield insurance for you. Let me check if Blue Cross Blue Shield is accepted here. One moment. Could you please provide your Blue Cross Blue Shield member ID number? This will help me check if your specific plan is accepted
+[01:37] bot: Let me read that out for you carefully.ID is B as in Bravo, C as in Charlie, 4, 7, 2, 9, 1, A as in Alpha, 6.
+[01:46] user: Thanks. What state is your Blue Cross Blue Shield plan issued in?
+[01:46] bot: Texas.
+[01:59] user: DC Acclaims mailing address or P.O. Box on the back of your insurance card? If so, please read it out. If not, just let me know
+[02:02] bot: I don’t see a claims mailing address or P.O. Box listed.
+[02:28] user: There are several Blue Cross Blue Shield plans accepted, but I need the exact plan name from your card to match it correctly. Could you read the full plan name as it appears on your card?
+[02:31] bot: Blue Cross Blue Shield of Texas PPO.
+[02:51] user: Thanks. Do you see a phone number printed on your insurance card? If so, please read it out. If not, just let me know.
+[02:57] bot: The number is 1-800-555-2470.
+[03:24] user: There are several Blue Cross Blue Shield PPO plans listed. To match your plan, do you see BlueChoice Medicare Advantage anywhere on your card, or is it just PPO? This will help me pick the right one.
+[03:28] bot: It just says PPO. I don’t see Blue Choice or Medicare Advantage listed.
+[03:46] user: Thank you for clarifying. Based on what you shared, your blue cross blue shield texas PPO plan is likely accepted. Would you like to update your insurance on file to this plan, or were you just checking if it's accepted?
+[03:51] bot: Just checking if it’s accepted. I’m still deciding about becoming a new patient.

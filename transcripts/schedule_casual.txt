@@ -1,0 +1,14 @@
+[00:17] user: and training purposes. Para español, oprima el dos. Thank you for calling Pivot Point Orthopedics. Would you like to create a demo patient profile? I just need your first and last name
+[00:17] bot: Devon Park.
+[00:19] bot: Devon Park.
+[00:31] user: Your patient profile is set up and your date of birth is July 4th, 2000 for demo purposes. How may I help you today?
+[00:37] bot: I’m looking to book a routine check-up sometime soon-ish, no rush. I’m pretty flexible, whatever’s easiest for you guys.
+[00:45] bot: Okay,  [interrupted]
+[00:52] user: Thanks for letting me know. Just to confirm, you Do you have a preferred provider you'd like to see for your routine checkup? Or are you open to anyone available?
+[00:54] bot: Anyone available is fine. I’m not picky.
+[01:17] user: You already have a routine office visit scheduled for Monday, September 14th at 10:30 a.m. Would you like to keep this appointment, reschedule it, or cancel it? Let me know how you'd like to proceed.
+[01:17] bot: Keep it.
+[01:28] user: You're all set for your routine checkup on Monday, September 14th at 10:30 a.m. Is there anything else I can help you with today?
+[01:30] bot: No, that’s it, thanks.
+[01:36] user: You're welcome. Have a great day
+[01:37] bot: Thanks, you too.

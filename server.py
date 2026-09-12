@@ -9,6 +9,7 @@ first_call.py -- Twilio connects here the moment the call is answered.
 
 import json
 import os
+import time
 from pathlib import Path
 
 import aiohttp
@@ -17,8 +18,6 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, Request, WebSocket
 
 from persona import DEFAULT_SCENARIO, SCENARIOS
-from pipecat.frames.frames import InterimTranscriptionFrame, TranscriptionFrame
-from pipecat.observers.base_observer import BaseObserver, FramePushed
 from pipecat.pipeline.pipeline import Pipeline
 from pipecat.pipeline.runner import PipelineRunner
 from pipecat.pipeline.task import PipelineParams, PipelineTask
@@ -34,33 +33,13 @@ from pipecat.services.openai.realtime.events import (
     AudioInput,
     InputAudioNoiseReduction,
     InputAudioTranscription,
-    SemanticTurnDetection,
+    TurnDetection,
     SessionProperties,
 )
-from pipecat.services.openai.realtime import events as realtime_events
 from pipecat.services.openai.realtime.llm import OpenAIRealtimeLLMService
 from pipecat.transports.websocket.fastapi import FastAPIWebsocketParams, FastAPIWebsocketTransport
 
 load_dotenv(override=True)
-
-# TEMPORARY DIAGNOSTIC: pipecat doesn't log raw incoming Realtime API events
-# anywhere, and its receive loop silently drops event types it doesn't
-# explicitly dispatch (e.g. conversation.item.input_audio_transcription.failed
-# has no handler at all). Patch the parser so every event type is visible
-# while we track down why no transcription is showing up. Remove once fixed.
-_original_parse_server_event = realtime_events.parse_server_event
-
-
-def _debug_parse_server_event(message):
-    evt = _original_parse_server_event(message)
-    if evt.type != "response.output_audio.delta":  # far too noisy to print
-        print(f"[debug] realtime event: {evt.type}")
-        if evt.type == "error" or "failed" in evt.type:
-            print(f"[debug]   details: {evt}")
-    return evt
-
-
-realtime_events.parse_server_event = _debug_parse_server_event
 
 TWILIO_ACCOUNT_SID = os.environ["TWILIO_ACCOUNT_SID"]
 TWILIO_AUTH_TOKEN = os.environ["TWILIO_AUTH_TOKEN"]
@@ -81,20 +60,6 @@ RECORDINGS_DIR = Path(__file__).parent / "recordings"
 app = FastAPI()
 
 
-class DebugTranscriptionObserver(BaseObserver):
-    """Temporary diagnostic: logs every transcription frame, from whichever
-    processor pushes it, regardless of final/interim status. Unlike
-    on_user_turn_message_added, this shows us raw transcription events even
-    when they're empty or never reach the aggregator as a real user turn."""
-
-    async def on_push_frame(self, data: FramePushed):
-        frame = data.frame
-        if isinstance(frame, TranscriptionFrame):
-            print(f"[debug] TranscriptionFrame (final): {frame.text!r}")
-        elif isinstance(frame, InterimTranscriptionFrame):
-            print(f"[debug] InterimTranscriptionFrame: {frame.text!r}")
-
-
 def open_transcript_file(scenario: str, call_sid: str):
     TRANSCRIPTS_DIR.mkdir(exist_ok=True)
     path = TRANSCRIPTS_DIR / f"call-{call_sid}-{scenario}.txt"
@@ -103,6 +68,7 @@ def open_transcript_file(scenario: str, call_sid: str):
 
 @app.websocket("/audio")
 async def audio_endpoint(websocket: WebSocket):
+    call_start = time.monotonic()
     await websocket.accept()
 
     # Twilio sends two JSON text frames before any audio:
@@ -142,10 +108,24 @@ async def audio_endpoint(websocket: WebSocket):
         settings=OpenAIRealtimeLLMService.Settings(
             system_instruction=system_instruction,
             session_properties=SessionProperties(
+                # Hard backstop against runaway/repetitive generations (seen
+                # once as a ~50s turn that restated "confirming/submitting"
+                # ~19 different ways while the agent was slow to respond).
+                # ~150 tokens is generous for the persona's normal one-or-two
+                # sentence turns but caps a degenerate loop early.
+                max_output_tokens=150,
                 audio=AudioConfiguration(
                     input=AudioInput(
                         transcription=InputAudioTranscription(),
-                        turn_detection=SemanticTurnDetection(),
+                        # Semantic VAD (even at low eagerness) reads the clean
+                        # sentence-final pauses inside a scripted IVR/monitoring
+                        # announcement as the far end finishing its turn. Plain
+                        # silence-duration VAD with a generous window is more
+                        # robust here: it only cares about literal silence, not
+                        # whether a sentence sounds "complete".
+                        turn_detection=TurnDetection(
+                            threshold=0.5, prefix_padding_ms=300, silence_duration_ms=900
+                        ),
                         noise_reduction=InputAudioNoiseReduction(type="near_field"),
                     )
                 ),
@@ -159,8 +139,10 @@ async def audio_endpoint(websocket: WebSocket):
     transcript_file = open_transcript_file(scenario, call_sid)
 
     def log_turn(role: str, text: str, note: str = ""):
+        elapsed = int(time.monotonic() - call_start)
+        timestamp = f"[{elapsed // 60:02d}:{elapsed % 60:02d}]"
         suffix = f"  [{note}]" if note else ""
-        line = f"{role}: {text}{suffix}"
+        line = f"{timestamp} {role}: {text}{suffix}"
         print(line)
         transcript_file.write(line + "\n")
         transcript_file.flush()
@@ -189,7 +171,6 @@ async def audio_endpoint(websocket: WebSocket):
             audio_in_sample_rate=PIPELINE_SAMPLE_RATE,
             audio_out_sample_rate=PIPELINE_SAMPLE_RATE,
         ),
-        observers=[DebugTranscriptionObserver()],
     )
 
     @transport.event_handler("on_client_disconnected")

@@ -1,0 +1,32 @@
+[00:07] bot:   [interrupted]
+[00:07] user: awarded for quality and training purposes. Para español oprima el dos.
+[00:08] bot: 
+[00:17] user: Thank you for calling Pivot Point Orthopedics. Would you like to create a demo patient profile? I just need your first and last name to get started.
+[00:18] bot: Jordan Lee.
+[00:31] user: Your patient profile has been created and your date of birth is July 4th, 2000 for demo purposes. How may I help you today?
+[00:40] bot: I need to reschedule my upcoming appointment; something came up at work. I don’t remember the exact date and time—could you look it up and confirm what I’m currently scheduled for?
+[00:51] bot: Okay,  [interrupted]
+[00:51] user: Let me check your upcoming appointments. One moment while I pull up the details.
+[01:01] user: I'm pulling up your scheduled appointments now. Please hold on just a moment. I'm checking your upcoming appointments now. Please hold on just a moment.
+[01:01] bot: 
+[01:15] user: I'm looking up your scheduled appointments now. Please hold on a moment.
+[01:15] bot: 
+[01:24] user: Are you still there?
+[01:25] bot: Yes, I’m here.
+[01:34] user: Thanks for waiting. I'm still working on retrieving your upcoming appointment. I'll let you know as soon as I have the details
+[01:34] bot: 
+[01:50] bot: 
+[02:00] user: Thank you for confirming. I'm still working on retreating your upcoming appointments. I'll let you know as soon as I have details. Are you still there?
+[02:01] bot: Yes.
+[02:10] user: I'm still working on pulling up your appointment details. I'll let you know as soon as I have them.
+[02:10] bot: Okay.
+[02:18] user: Thanks for your patience. I'll update you as soon as your appointment details are ready.
+[02:18] bot: 
+[02:33] user: Thank you for waiting. I'll let you know as soon as I have your appointment details.
+[02:33] bot: 
+[02:41] user: Are you still there?
+[02:42] bot: Yeah, I’m here.
+[02:56] user: It's taking a bit longer than usual to retrieve your appointment details. Would you like to keep waiting, or would you prefer to speak with someone from the clinic directly for faster help?
+[02:58] bot: I’d prefer to speak with someone for faster help if possible.
+[03:11] user: Transferring you now. Thank you Hello, you've reached the pretty good AI test line. Goodbye.
+[03:13] bot: Oh—okay. Goodbye.
