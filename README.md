@@ -2,7 +2,7 @@
 
 An automated voice bot that places outbound calls to Pretty Good AI's test line, role-plays as a patient across a range of realistic scenarios, and records and transcribes both sides of each conversation for analysis.
 
-Built with Twilio (telephony), Pipecat (pipeline and media-stream plumbing), and the OpenAI Realtime API (speech-to-speech). See [`docs/architecture.md`](docs/architecture.md) for design decisions and tradeoffs, and [`bug-report.md`](bug-report.md) for issues found in the agent under test.
+Built with Twilio (telephony), Pipecat (pipeline and media-stream plumbing), and the OpenAI Realtime API (speech-to-speech). See [`docs/architecture.md`](docs/architecture.md) for design decisions and tradeoffs, and [`docs/bug-report.md`](docs/bug-report.md) for issues found in the agent under test.
 
 ## Requirements
 
@@ -14,7 +14,7 @@ Built with Twilio (telephony), Pipecat (pipeline and media-stream plumbing), and
 ## Setup
 
 ```bash
-git clone https://github.com/YOURNAME/pgai-voicebot.git
+git clone https://github.com/James-Li112/pgai-voicebot.git
 cd pgai-voicebot
 
 python -m venv .venv
@@ -53,7 +53,7 @@ Wait for `Application startup complete`. It listens on port 8080.
 ngrok http 8080
 ```
 
-Confirm the forwarding hostname matches `PUBLIC_URL` in `.env`. If it changed, update `.env` and restart the server, which reads it at boot.
+Confirm the forwarding hostname matches `PUBLIC_URL` in `.env`. If it changed, update `.env` before the next step — `PUBLIC_URL` is only read by `first_call.py` (to build the TwiML it hands Twilio), not by `server.py`, so there's no need to restart the server over it.
 
 **Terminal 3 — place the call**
 
@@ -61,7 +61,7 @@ Confirm the forwarding hostname matches `PUBLIC_URL` in `.env`. If it changed, u
 python first_call.py --scenario schedule
 ```
 
-That single command runs an entire call end to end: it dials the test line, streams audio in both directions through the Realtime pipeline, logs the transcript turn by turn, and downloads the recording when Twilio's webhook fires.
+This only places the call: it dials the test line via Twilio's REST API and prints the call SID, then exits. Everything else — streaming audio through the Realtime pipeline, logging the transcript turn by turn, and downloading the recording — happens asynchronously in the already-running `server.py`, which Twilio connects to the moment the call is answered. That's why the server has to be up first.
 
 Omit `--scenario` to use the default (`schedule`).
 
@@ -83,7 +83,7 @@ Personas live in `persona.py` as system instructions: a shared base defining how
 |---|---|
 | `schedule` | Simple appointment booking, returning patient |
 | `schedule_casual` | Booking with vague, non-committal timing |
-| `schedule_direct` | Blunt caller with a narrow time window; asks the agent to read the name back |
+| `schedule_direct` | Blunt caller with a narrow time window; asks the agent to read the caller's own name back |
 | `reschedule` | Moving an existing appointment the caller can't recall the details of |
 | `refill` | Blood-pressure medication refill, pharmacy and identity verification |
 | `questions` | Office hours, location, and insurance coverage as a prospective patient |
@@ -112,7 +112,7 @@ server.py        FastAPI app: Media Streams WebSocket + recording webhook
 first_call.py    Places an outbound call and connects it to the server
 voice_bot.py     Same pipeline against a local mic, for testing
 persona.py       Patient personas as system instructions
-docs/            Architecture doc and product notes
+docs/            Architecture doc and bug report
 transcripts/     Per-call transcripts
 recordings/      Per-call MP3s
 ```
