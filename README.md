@@ -1,73 +1,124 @@
-# Voice Bot — Pretty Good AI Assessment
+# PGAI Voice Bot — Automated Patient Simulator
 
-An automated caller that dials Pretty Good AI's test line, role-plays as a patient
-(scheduling, rescheduling, refills, questions, and several edge cases), and logs a
-timestamped transcript of the call. See [docs/architecture.md](docs/architecture.md)
-for how it's built and why, and [docs/bug-report.md](docs/bug-report.md) for issues
-found in the target agent.
+An automated voice bot that places outbound calls to Pretty Good AI's test line, role-plays as a patient across a range of realistic scenarios, and records and transcribes both sides of each conversation for analysis.
+
+Built with Twilio (telephony), Pipecat (pipeline and media-stream plumbing), and the OpenAI Realtime API (speech-to-speech). See [`docs/architecture.md`](docs/architecture.md) for design decisions and tradeoffs, and [`docs/bug-report.md`](docs/bug-report.md) for issues found in the agent under test.
+
+## Requirements
+
+- Python 3.13
+- A Twilio account with a voice-capable US number and an approved compliance profile
+- An OpenAI API key with credit (the Realtime API is not covered by any free tier)
+- [ngrok](https://ngrok.com) to expose the local server to Twilio
 
 ## Setup
 
-```powershell
+```bash
+git clone https://github.com/YOURNAME/pgai-voicebot.git
+cd pgai-voicebot
+
 python -m venv .venv
-.\.venv\Scripts\Activate.ps1
+source .venv/bin/activate          # Windows: .venv\Scripts\Activate.ps1
+
 pip install -r requirements.txt
-Copy-Item .env.example .env
 ```
 
-Fill in `.env`:
+Copy `.env.example` to `.env` and fill in your own values:
 
-- `OPENAI_API_KEY` — needs Realtime API access.
-- `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_PHONE_NUMBER` — from the
-  [Twilio console](https://console.twilio.com); the phone number is the one placing
-  the call.
-- `PUBLIC_URL` — the public hostname `server.py` is reachable at (see below), no
-  scheme, e.g. `abc123.ngrok-free.app`.
-
-## Try it against your own mic first (no telephony, no Twilio cost)
-
-```powershell
-python voice_bot.py --scenario schedule
+```
+TWILIO_ACCOUNT_SID=      # console.twilio.com, starts with AC
+TWILIO_AUTH_TOKEN=       # primary auth token, same page
+TWILIO_PHONE_NUMBER=     # your Twilio number, E.164 format e.g. +16035551234
+OPENAI_API_KEY=          # platform.openai.com
+PUBLIC_URL=              # ngrok hostname, no scheme e.g. abc123.ngrok-free.dev
 ```
 
-You play the clinic receptionist (speak first); the bot responds as the patient.
-Useful for tuning turn-taking/pacing before spending a real call on it. Only needs
-`OPENAI_API_KEY`.
+Nothing else needs configuring. The destination number is a constant in the source and is never read from the environment, so a misconfigured `.env` cannot cause a call to the wrong line.
 
-## Placing a real call
+## Running a call
 
-Three things need to be running: a tunnel exposing `server.py` to the internet,
-`server.py` itself, and then the script that places the call.
+Twilio opens a WebSocket back to this machine the moment the call is answered, so the server and the tunnel both have to be up first.
 
-```powershell
-# terminal 1
-ngrok http 8080
-# copy the https URL it prints (minus the scheme) into PUBLIC_URL in .env
+**Terminal 1 — server**
 
-# terminal 2
+```bash
 python server.py
+```
 
-# terminal 3
+Wait for `Application startup complete`. It listens on port 8080.
+
+**Terminal 2 — tunnel**
+
+```bash
+ngrok http 8080
+```
+
+Confirm the forwarding hostname matches `PUBLIC_URL` in `.env`. If it changed, update `.env` before the next step — `PUBLIC_URL` is only read by `first_call.py` (to build the TwiML it hands Twilio), not by `server.py`, so there's no need to restart the server over it.
+
+**Terminal 3 — place the call**
+
+```bash
 python first_call.py --scenario schedule
 ```
 
-`server.py` must already be running before `first_call.py` is run — Twilio connects
-to it the instant the call is answered. Restart `server.py` after any code change
-before placing another call (it's a long-running process; Python won't pick up
-edits on its own).
+This only places the call: it dials the test line via Twilio's REST API and prints the call SID, then exits. Everything else — streaming audio through the Realtime pipeline, logging the transcript turn by turn, and downloading the recording — happens asynchronously in the already-running `server.py`, which Twilio connects to the moment the call is answered. That's why the server has to be up first.
 
-Each call writes a timestamped transcript to `transcripts/call-<call_sid>-<scenario>.txt`
-and downloads the recording to `recordings/<call_sid>.mp3` once Twilio finishes
-processing it.
+Omit `--scenario` to use the default (`schedule`).
+
+## Testing without telephony
+
+`voice_bot.py` runs the same pipeline against your laptop microphone and speakers instead of a phone line. You play the receptionist; the bot responds as the patient.
+
+```bash
+python voice_bot.py --scenario reschedule
+```
+
+This is the fastest way to iterate on conversational behavior — it costs nothing in telephony charges and gives instant feedback on turn-taking and pacing. Use headphones, or the speaker output feeds back into the mic and the bot interrupts itself.
 
 ## Scenarios
 
-`--scenario` accepts any key in `persona.py`'s `SCENARIOS` dict: `schedule`,
-`schedule_casual`, `schedule_direct`, `reschedule`, `refill`, `questions`,
-`vague_caller`, `weekend_request`, `topic_switch`, `interrupts_agent`,
-`off_scope_medical`. Defaults to `schedule` if omitted.
+Personas live in `persona.py` as system instructions: a shared base defining how a real caller behaves on the phone, plus a per-scenario goal, personality, and built-in ambiguity.
 
-## Test number
+| Scenario | What it tests |
+|---|---|
+| `schedule` | Simple appointment booking, returning patient |
+| `schedule_casual` | Booking with vague, non-committal timing |
+| `schedule_direct` | Blunt caller with a narrow time window; asks the agent to read the caller's own name back |
+| `reschedule` | Moving an existing appointment the caller can't recall the details of |
+| `refill` | Blood-pressure medication refill, pharmacy and identity verification |
+| `questions` | Office hours, location, and insurance coverage as a prospective patient |
+| `weekend_request` | Booking on a Saturday or Sunday |
+| `topic_switch` | Abandons scheduling mid-call and switches to a refill request |
+| `interrupts_agent` | Deliberate barge-in, twice per call |
+| `off_scope_medical` | Asks the agent directly for medical advice |
+| `vague_caller` | Opens with an unclear request and only clarifies when pressed |
 
-All calls go to the fixed test line defined in `first_call.py` (`TEST_NUMBER`) —
-never a different number.
+Adding a scenario means adding one entry to `SCENARIOS`; no other code changes.
+
+## Output
+
+| Path | Contents |
+|---|---|
+| `transcripts/call-<CallSid>-<scenario>.txt` | Turn-by-turn transcript with elapsed timestamps, speaker-labelled, interruptions marked |
+| `recordings/<CallSid>.mp3` | Full call audio, downloaded via Twilio's recording webhook |
+| `transcripts/local-<scenario>-<timestamp>.txt` | Transcripts from local microphone runs |
+
+Transcripts come from the Realtime API's own transcription events rather than a separate pass, so they're written live as the call proceeds.
+
+## Layout
+
+```
+server.py        FastAPI app: Media Streams WebSocket + recording webhook
+first_call.py    Places an outbound call and connects it to the server
+voice_bot.py     Same pipeline against a local mic, for testing
+persona.py       Patient personas as system instructions
+docs/            Architecture doc and bug report
+transcripts/     Per-call transcripts
+recordings/      Per-call MP3s
+```
+
+## Notes
+
+- All calls go to `+1-805-439-8008` only. The number is a module-level constant with an assertion before dialing.
+- Calls have a hard duration cap. There are no retries and no concurrency — one call at a time.
+- `.env` is gitignored. `.env.example` documents every variable the project reads.
